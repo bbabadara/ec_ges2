@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="flex justify-end">
+        <a href="{{path("classe_create")}}" class=" bg-blue-500 hover:bg-blue-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Ajouter</a>
+        
+    </div>
+        <table class="w-full border-collapse border border-gray-300 mt-2">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2 text-left">id</th>
+                    <th class="border border-gray-300 p-2 text-left">Nom</th>
+                    <th class="border border-gray-300 p-2 text-left">Create At</th>
+                    <th class="border border-gray-300 p-2 text-left">Update At</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for classe in data %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{classe}}</td>
+                    <td class="border border-gray-300 p-2">{{classe.nom}}</td>
+                    <td class="border border-gray-300 p-2">{{classe.createAt|date('d-m-Y')}}</td>
+                    <td class="border border-gray-300 p-2">{{classe.updateAt|date('d-m-Y')}}</td>
+                </tr>
+                {% endfor %}
+             
+            </tbody>
+        </table>
+    
+{% endblock %}
+

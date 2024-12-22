@@ -1,17 +1,70 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        [x-cloak] { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex" x-data="{ sidebarExpanded: true }">
+    <!-- Sidebar -->
+    <aside :class="sidebarExpanded ? 'w-64' : 'w-20'" class="bg-blue-600 text-white flex flex-col transition-all duration-300">
+        <div class="flex items-center p-4">
+            <img src="https://via.placeholder.com/40" alt="Logo" class="h-10 w-10 rounded-full">
+            <span x-show="sidebarExpanded" class="ml-2 text-lg font-bold transition-all duration-300">Ecole221</span>
+        </div>
+        <nav class="mt-6">
+            <ul>
+                <li class="group flex items-center p-4 hover:bg-blue-700 cursor-pointer relative">
+                    <span class="material-icons">menu_book</span>
+                   <a href="{{path("classe_index")}}"> <span x-show="sidebarExpanded" class="ml-3">Classe</span></a>
+                    <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Cours</span>
+                </li>
+                <li class="group flex items-center p-4 hover:bg-blue-700 cursor-pointer relative">
+                    <span class="material-icons">event_busy</span>
+                    <span x-show="sidebarExpanded" class="ml-3">Mes Absences</span>
+                    <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Absences</span>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col">
+        <!-- Navbar -->
+        <header class="bg-white shadow p-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <button @click="sidebarExpanded = !sidebarExpanded" class="mr-4 focus:outline-none">
+                    <span class="material-icons">menu</span>
+                </button>
+                <input type="text" placeholder="Rechercher..." class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300">
+            </div>
+            <div class="relative" x-data="{ open: false }">
+                <img src="https://via.placeholder.com/40" alt="User Photo" class="h-10 w-10 rounded-full cursor-pointer" @click="open = !open">
+                <div x-cloak x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
+                    <ul>
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Mon Profil</li>
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Paramètres</li>
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Se Déconnecter</li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        
+        <!-- Central content -->
+        <main class="p-4">
+            <div class="bg-white p-6 rounded shadow">
+           {% block body %} {% endblock %}
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://unpkg.com/alpinejs" defer></script>
+</body>
 </html>
