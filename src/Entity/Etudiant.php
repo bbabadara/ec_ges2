@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EtudiantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -38,10 +40,17 @@ class Etudiant
     #[ORM\ManyToOne(inversedBy: 'etudiants')]
     private ?Classe $classe = null;
 
+    /**
+     * @var Collection<int, Absence>
+     */
+    #[ORM\OneToMany(targetEntity: Absence::class, mappedBy: 'Etudiant', orphanRemoval: true)]
+    private Collection $absences;
+
     public function __construct()
     {
         $this->createAt = new \DateTimeImmutable();
         $this->updateAt = new \DateTime  ();
+        $this->absences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,13 +123,7 @@ class Etudiant
         return $this->createAt;
     }
 
-    public function setCreateAt(\DateTimeImmutable $createAt): static
-    {
-        $this->createAt = $createAt;
-
-        return $this;
-    }
-
+   
     public function getUpdateAt(): ?\DateTimeInterface
     {
         return $this->updateAt;
@@ -141,6 +144,36 @@ class Etudiant
     public function setClasse(?Classe $classe): static
     {
         $this->classe = $classe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Absence>
+     */
+    public function getAbsences(): Collection
+    {
+        return $this->absences;
+    }
+
+    public function addAbsence(Absence $absence): static
+    {
+        if (!$this->absences->contains($absence)) {
+            $this->absences->add($absence);
+            $absence->setEtudiant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbsence(Absence $absence): static
+    {
+        if ($this->absences->removeElement($absence)) {
+            // set the owning side to null (unless already changed)
+            if ($absence->getEtudiant() === $this) {
+                $absence->setEtudiant(null);
+            }
+        }
 
         return $this;
     }

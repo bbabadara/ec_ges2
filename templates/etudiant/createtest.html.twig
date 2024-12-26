@@ -1,0 +1,94 @@
+{# templates/etudiant/form.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="max-w-4xl mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-lg bg-white">
+        <h1 class="text-2xl font-semibold text-center mb-6">Ajouter un Etudiant</h1>
+
+        {{ form_start(formEtudiant) }}
+
+        <div class="space-y-4">
+            {# Matricule #}
+            <div>
+                {{ form_label(formEtudiant.matricule, 'Matricule', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.matricule, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.matricule) }}
+            </div>
+
+            {# Nom complet #}
+            <div>
+                {{ form_label(formEtudiant.nomComplet, 'Nom complet', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.nomComplet, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.nomComplet) }}
+            </div>
+
+            {# Adresse #}
+            <div>
+                {{ form_label(formEtudiant.adresse, 'Adresse', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.adresse, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.adresse) }}
+            </div>
+
+            {# Login (email) #}
+            <div>
+                {{ form_label(formEtudiant.login, 'Login (Email)', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.login, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.login) }}
+            </div>
+
+            {# Mot de passe #}
+            <div>
+                {{ form_label(formEtudiant.mdp, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.mdp, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.mdp) }}
+            </div>
+
+            {# Date de création #}
+            <div>
+                {{ form_label(formEtudiant.createAt, 'Date de création', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.createAt, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.createAt) }}
+            </div>
+
+            {# Date de mise à jour #}
+            <div>
+                {{ form_label(formEtudiant.updateAt, 'Date de mise à jour', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.updateAt, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.updateAt) }}
+            </div>
+
+            {# Classe #}
+            <div>
+                {{ form_label(formEtudiant.classe, 'Classe', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(formEtudiant.classe, {'attr': {'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'}}) }}
+                </div>
+                {{ form_errors(formEtudiant.classe) }}
+            </div>
+
+            {# Bouton Submit #}
+            <div class="mt-6">
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Enregistrer
+                </button>
+            </div>
+        </div>
+
+        {{ form_end(formEtudiant) }}
+    </div>
+{% endblock %}

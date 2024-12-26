@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>{% block pageTitle %} Ges Ecole {% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -13,6 +13,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex" x-data="{ sidebarExpanded: true }">
     <!-- Sidebar -->
+    {% block sidebar %} 
     <aside :class="sidebarExpanded ? 'w-64' : 'w-20'" class="bg-blue-600 text-white flex flex-col transition-all duration-300">
         <div class="flex items-center p-4">
             <img src="https://via.placeholder.com/40" alt="Logo" class="h-10 w-10 rounded-full">
@@ -20,23 +21,33 @@
         </div>
         <nav class="mt-6">
             <ul>
+             {% block menu %}
+
                 <li class="group flex items-center p-4 hover:bg-blue-700 cursor-pointer relative">
-                    <span class="material-icons">menu_book</span>
-                   <a href="{{path("classe_index")}}"> <span x-show="sidebarExpanded" class="ml-3">Classe</span></a>
+                   <a href="{{path("classe_index")}}" class="flex items-center "> 
+                        <span class="material-icons">menu_book</span>
+                    <span x-show="sidebarExpanded" class="ml-3">Liste Classe</span>
                     <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Cours</span>
+                    </a>
                 </li>
                 <li class="group flex items-center p-4 hover:bg-blue-700 cursor-pointer relative">
-                    <span class="material-icons">event_busy</span>
-                    <span x-show="sidebarExpanded" class="ml-3">Mes Absences</span>
-                    <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Absences</span>
+                   <a href="{{path("etudiant_index")}}" class="flex items-center "> 
+                        <span class="material-icons">menu_book</span>
+                    <span x-show="sidebarExpanded" class="ml-3">Liste Etudiant</span>
+                    <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Cours</span>
+                    </a>
                 </li>
+              
+                 {% endblock %}
             </ul>
         </nav>
     </aside>
+    {% endblock %}
 
     <!-- Main content -->
     <div class="flex-1 flex flex-col">
         <!-- Navbar -->
+        {% block navbar %}
         <header class="bg-white shadow p-4 flex justify-between items-center">
             <div class="flex items-center">
                 <button @click="sidebarExpanded = !sidebarExpanded" class="mr-4 focus:outline-none">
@@ -55,11 +66,13 @@
                 </div>
             </div>
         </header>
-
+     {% endblock %}
         
         <!-- Central content -->
         <main class="p-4">
             <div class="bg-white p-6 rounded shadow">
+               <h1 class="text-2xl text-center mt-4"> {% block bodyTitle %}body title{% endblock %} </h1> 
+
            {% block body %} {% endblock %}
             </div>
         </main>

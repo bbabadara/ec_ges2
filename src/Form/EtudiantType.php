@@ -27,8 +27,9 @@ class EtudiantType extends AbstractType
             ])
             ->add('classe', EntityType::class, [
                 'class' => Classe::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
+            
         ;
     }
 

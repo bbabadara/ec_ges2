@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
+ {% block bodyTitle %}Liste des classes{% endblock %}
+
 {% block body %}
+   
     <div class="flex justify-end">
         <a href="{{path("classe_create")}}" class=" bg-blue-500 hover:bg-blue-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Ajouter</a>
         

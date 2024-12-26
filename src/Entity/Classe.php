@@ -34,11 +34,18 @@ class Classe
     #[ORM\ManyToOne(inversedBy: 'classe')]
     private ?Niveau $niveau = null;
 
+    /**
+     * @var Collection<int, Cours>
+     */
+    #[ORM\OneToMany(targetEntity: Cours::class, mappedBy: 'classe')]
+    private Collection $cours;
+
     public function __construct()
     {
         $this->etudiants = new ArrayCollection();
         $this->createAt = new \DateTimeImmutable();
         $this->updateAt = new \DateTime();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,5 +132,35 @@ class Classe
     }
     public function __toString(): string{
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): static
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours->add($cour);
+            $cour->setClasse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): static
+    {
+        if ($this->cours->removeElement($cour)) {
+            // set the owning side to null (unless already changed)
+            if ($cour->getClasse() === $this) {
+                $cour->setClasse(null);
+            }
+        }
+
+        return $this;
     }
 }
