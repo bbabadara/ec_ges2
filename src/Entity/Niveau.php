@@ -37,6 +37,8 @@ class Niveau
     public function __construct()
     {
         $this->classe = new ArrayCollection();
+        $this->createAt = new \DateTimeImmutable();
+        $this->updateAt = new \DateTime();
     }
 
     public function getId(): ?int

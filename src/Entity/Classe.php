@@ -40,6 +40,9 @@ class Classe
     #[ORM\OneToMany(targetEntity: Cours::class, mappedBy: 'classe')]
     private Collection $cours;
 
+    #[ORM\ManyToOne(inversedBy: 'classe')]
+    private ?Filiere $filiere = null;
+
     public function __construct()
     {
         $this->etudiants = new ArrayCollection();
@@ -160,6 +163,18 @@ class Classe
                 $cour->setClasse(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFiliere(): ?Filiere
+    {
+        return $this->filiere;
+    }
+
+    public function setFiliere(?Filiere $filiere): static
+    {
+        $this->filiere = $filiere;
 
         return $this;
     }

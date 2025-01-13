@@ -43,6 +43,8 @@ class Professeur
     public function __construct()
     {
         $this->cours = new ArrayCollection();
+        $this->createAt = new \DateTimeImmutable();
+        $this->updateAt = new \DateTime();
     }
 
     public function getId(): ?int
