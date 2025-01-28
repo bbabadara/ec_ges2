@@ -1,7 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}liste des classes{% endblock %}
+{% block title %}Hello ClasseController!{% endblock %}
+{% block bodyTitle %}Liste des classe{% endblock %} 
 
 {% block body %}
+ <div class="flex justify-end">
+        <a href="{{path("app_classe_add")}}" class=" bg-blue-500 hover:bg-blue-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Ajouter</a>
+        
+    </div>
+    {# <div class="flex flex-wrap">
+        {% for message in app.flashes('success') %}
+            <div class="flex items-center bg-green-500 text-white p-2 mx-4 my-2 rounded-lg">{{ message }}</div>
+        {% endfor %}
+    </div> #}
+        <table class="w-full border-collapse border border-gray-300 mt-2">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2 text-left">Identifiant</th>
+                    <th class="border border-gray-300 p-2 text-left">Libelle</th>
+                    <th class="border border-gray-300 p-2 text-left">Filiere</th>
+                    <th class="border border-gray-300 p-2 text-left">Niveau</th>
+                    <th class="border border-gray-300 p-2 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody>
 
+                {% for classe in classes %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{classe.id}}</td>
+                    <td class="border border-gray-300 p-2">{{classe.libelle}}</td>
+                    <td class="border border-gray-300 p-2">{{classe.filiere.libelle}}</td>
+                    <td class="border border-gray-300 p-2">{{classe.niveau.libelle}}</td>
+                    <td class="border border-gray-300 p-2">
+                        <a href="{{path("app_classe_edit",{id:classe.id})}}" class="bg-green-500 hover:bg-green-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Modifier</a>
+                        <a href="{{path("app_classe_delete",{id:classe.id})}}" class="bg-red-500 hover:bg-red-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Supprimer</a>
+
+                </tr>
+                {% endfor %}
+             
+            </tbody>
+        </table>
+        <div class="navigation mt-5">
+    {{ knp_pagination_render(classes) }}
+</div>
 {% endblock %}

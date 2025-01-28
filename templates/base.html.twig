@@ -24,16 +24,23 @@
              {% block menu %}
 
                 <li class="group flex items-center p-4 hover:bg-blue-700 cursor-pointer relative">
-                   <a href="{{path("classe_index")}}" class="flex items-center "> 
+                   <a href="{{path("app_classe_liste")}}" class="flex items-center "> 
                         <span class="material-icons">menu_book</span>
-                    <span x-show="sidebarExpanded" class="ml-3">Liste Classe</span>
+                    <span x-show="sidebarExpanded" class="ml-3">Liste Classes</span>
                     <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Cours</span>
                     </a>
                 </li>
                 <li class="group flex items-center p-4 hover:bg-blue-700 cursor-pointer relative">
-                   <a href="{{path("etudiant_index")}}" class="flex items-center "> 
+                   <a href="{{path("app_filiere_liste1")}}" class="flex items-center "> 
                         <span class="material-icons">menu_book</span>
-                    <span x-show="sidebarExpanded" class="ml-3">Liste Etudiant</span>
+                    <span x-show="sidebarExpanded" class="ml-3">Liste Filieres</span>
+                    <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Cours</span>
+                    </a>
+                </li>
+                <li class="group flex items-center p-4 hover:bg-blue-700 cursor-pointer relative">
+                   <a href="{{path("app_niveau_liste1")}}" class="flex items-center "> 
+                        <span class="material-icons">menu_book</span>
+                    <span x-show="sidebarExpanded" class="ml-3">Liste Niveaux</span>
                     <span x-show="!sidebarExpanded" class="absolute left-full ml-2 bg-gray-700 text-white text-xs p-1 rounded hidden group-hover:block">Mes Cours</span>
                     </a>
                 </li>

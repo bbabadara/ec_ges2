@@ -16,17 +16,17 @@ class Filiere
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $nom = null;
+    private ?string $libelle = null;
 
     /**
      * @var Collection<int, Classe>
      */
     #[ORM\OneToMany(targetEntity: Classe::class, mappedBy: 'filiere')]
-    private Collection $classe;
+    private Collection $classes;
 
     public function __construct()
     {
-        $this->classe = new ArrayCollection();
+        $this->classes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -34,14 +34,14 @@ class Filiere
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getLibelle(): ?string
     {
-        return $this->nom;
+        return $this->libelle;
     }
 
-    public function setNom(string $nom): static
+    public function setLibelle(string $libelle): static
     {
-        $this->nom = $nom;
+        $this->libelle = $libelle;
 
         return $this;
     }
@@ -49,27 +49,27 @@ class Filiere
     /**
      * @return Collection<int, Classe>
      */
-    public function getClasse(): Collection
+    public function getClasses(): Collection
     {
-        return $this->classe;
+        return $this->classes;
     }
 
-    public function addClasse(Classe $classe): static
+    public function addClass(Classe $class): static
     {
-        if (!$this->classe->contains($classe)) {
-            $this->classe->add($classe);
-            $classe->setFiliere($this);
+        if (!$this->classes->contains($class)) {
+            $this->classes->add($class);
+            $class->setFiliere($this);
         }
 
         return $this;
     }
 
-    public function removeClasse(Classe $classe): static
+    public function removeClass(Classe $class): static
     {
-        if ($this->classe->removeElement($classe)) {
+        if ($this->classes->removeElement($class)) {
             // set the owning side to null (unless already changed)
-            if ($classe->getFiliere() === $this) {
-                $classe->setFiliere(null);
+            if ($class->getFiliere() === $this) {
+                $class->setFiliere(null);
             }
         }
 

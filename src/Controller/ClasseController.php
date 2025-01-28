@@ -1,95 +1,105 @@
 <?php
-
 namespace App\Controller;
-
 use App\Entity\Classe;
+use App\Form\ClasseType;
 use App\Repository\ClasseRepository;
-use App\Repository\FiliereRepository;
-use App\Repository\NiveauRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+// lister classes
 class ClasseController extends AbstractController
 {
-    #[Route('/classe/index', name: 'classe_index', methods: ["GET"])]
-    public function index( ClasseRepository $classeRepo, NiveauRepository $niveauRepo, FiliereRepository $filiereRepo,Request $request ): Response
-     {
-        // Récupérer les filtres de niveau et de filière
-        $niveauId = $request->query->get('niveau');
-        $filiereId = $request->query->get('filiere');
-
-        // Construire la condition de filtre
-        $criteria = [];
-        if ($niveauId) {
-            $criteria['niveau'] = $niveauId;
-        }
-        if ($filiereId) {
-            $criteria['filiere'] = $filiereId;
-        }
-
-        // Nombre total d'éléments filtrés
-        $total = $classeRepo->count($criteria);
-
-        // Nombre total d'éléments par page
-        $perPage = 5;
-
-        // Nombre total de pages
-        $nbrPages = ceil($total / $perPage);
-
-        // Page courante
-        $page = $request->query->getInt('page', 1);
-
-        // Vérification de la page courante
-        if ($page < 1) {
-            $page = 1;
-        }
-        if ($page > $nbrPages) {
-            $page = $nbrPages;
-        }
-
-        // Calcul du premier élément de la liste
-        $offset = ($page - 1) * $perPage;
-
-        // Sélection des classes avec les filtres appliqués
-        $classes = $classeRepo->findBy($criteria, ['id' => 'ASC'], $perPage, $offset);
-
-        // Récupérer les niveaux et les filières pour les sélecteurs
-        $niveaux = $niveauRepo->findAll();
-        $filieres = $filiereRepo->findAll();
-
-        return $this->render('classe/index.html.twig', [
-            'data' => $classes,
-            'nbrPages' => $nbrPages,
-            'page' => $page,
-            'niveaux' => $niveaux,
-            'filieres' => $filieres,
-            'selectedNiveau' => $niveauId,
-            'selectedFiliere' => $filiereId,
-        ]);
-    }
-
-    #[Route('/classe/create', name: 'classe_create', methods: ["GET", "POST"])]
-    public function create(Request $request, \Doctrine\Persistence\ManagerRegistry $doctrine): Response
+    #[Route('/classe/liste',  name: 'app_classe_liste',methods: ['GET'])]
+    public function index(ClasseRepository $classeRepository,PaginatorInterface $paginator, Request $request): Response
     {
-        $classe = new Classe();
-        $form = $this->createForm(ClasseType::class, $classe);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Save the new Classe
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($classe);
-            $entityManager->flush();
-
-            // Redirect to the index page
-            return $this->redirectToRoute('classe_index');
-        }
-
-        return $this->render('classe/create.html.twig', [
-            'formClasse' => $form->createView(),
+        $data = $classeRepository->findAll();
+        $classes = $paginator->paginate(
+            $data, /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            5 /* limit per page */
+        );
+        return $this->render('classe/liste.html.twig', [
+            'classes' => $classes,
         ]);
     }
+    // ajouter une classe
+    #[Route('/classe/add', name: 'app_classe_add', methods: ['GET', 'POST'])]
+    public function add(ClasseRepository $classeRepository, Request $request, EntityManagerInterface $manager): Response
+    {
+        // Créer une nouvelle instance de Classe
+        $classe = new Classe();
+    
+        // Générer le formulaire
+        $form = $this->createForm(ClasseType::class, $classe);
+        $form->handleRequest($request);
+    
+        // Vérifier si le formulaire est soumis et valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            $classe=$form->getData();
+            // Persister la classe dans la base de données
+            $manager->persist($classe);
+            $manager->flush();
+            //message de confirmation
+            $this->addFlash('success', 'Classe ajoutée avec succès');
+    
+            // Rediriger après la soumission
+            return $this->redirectToRoute('app_classe_liste');
+        }
+    
+        // Afficher le formulaire
+        return $this->render('classe/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // modifier une classe
+    #[Route('/classe/{id}/edit', name: 'app_classe_edit', methods: ['GET', 'POST'])]
+    public function edit(Classe $classe, Request $request, EntityManagerInterface $manager): Response
+    {
+        // Générer le formulaire
+        $form = $this->createForm(ClasseType::class, $classe);
+        $form->handleRequest($request);
+    
+        // Vérifier si le formulaire est soumis et valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            $classe=$form->getData();
+            // Persister la classe dans la base de données
+            $manager->persist($classe);
+            $manager->flush();
+    //message de confirmation
+    $this->addFlash('success', 'Classe modifiée avec succès');
+
+            // Rediriger après la soumission
+            return $this->redirectToRoute('app_classe_liste');
+
+        }
+    
+        // Afficher le formulaire
+        return $this->render('classe/add.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    // supprimer une classe
+    #[Route('/classe/{id}/delete', name: 'app_classe_delete', methods: ['GET',])]
+    public function delete(Classe $classe, Request $request, EntityManagerInterface $manager): Response
+    {
+        // Vérifier si le token CSRF est valide
+            // Supprimer la classe
+            $manager->remove($classe);
+            $manager->flush();
+        // Afficher un message de confirmation
+        $this->addFlash('success', 'Classe supprimée avec succès');
+    
+        // Rediriger après la suppression
+        return $this->redirectToRoute('app_classe_liste');
+    }
+    
 }
+
+
+

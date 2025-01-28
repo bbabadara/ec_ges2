@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello NiveauController!{% endblock %}
+{% block bodyTitle %}Liste des niveau{% endblock %} 
+
+{% block body %}
+ <div class="flex justify-end">
+        <a href="{{path("app_niveau_add")}}" class=" bg-blue-500 hover:bg-blue-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Ajouter</a>
+        
+    </div>
+        <table class="w-full border-collapse border border-gray-300 mt-2">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2 text-left">Identifiant</th>
+                    <th class="border border-gray-300 p-2 text-left">Libelle</th>
+                    <th class="border border-gray-300 p-2 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for niveau in niveaux %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{niveau.id}}</td>
+                    <td class="border border-gray-300 p-2">{{niveau.libelle}}</td>
+                    <td class="border border-gray-300 p-2">
+                        <a href="{{path("app_niveau_edit",{id:niveau.id})}}" class="bg-green-500 hover:bg-green-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Modifier</a>
+                        <a href="" class="bg-red-500 hover:bg-red-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Supprimer</a>
+
+                </tr>
+                {% endfor %}
+             
+            </tbody>
+        </table>
+        <div class="navigation mt-5">
+    {{ knp_pagination_render(niveaux) }}
+</div>
+{% endblock %}

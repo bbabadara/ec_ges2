@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\NiveauRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NiveauRepository::class)]
@@ -16,29 +15,18 @@ class Niveau
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 10)]
-    private ?string $nom = null;
+    #[ORM\Column(length: 50)]
+    private ?string $libelle = null;
 
     /**
      * @var Collection<int, Classe>
      */
     #[ORM\OneToMany(targetEntity: Classe::class, mappedBy: 'niveau')]
-    private Collection $classe;
-
-    #[ORM\OneToOne(inversedBy: 'niveau', cascade: ['persist', 'remove'])]
-    private ?Semestre $semestre = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updateAt = null;
+    private Collection $classes;
 
     public function __construct()
     {
-        $this->classe = new ArrayCollection();
-        $this->createAt = new \DateTimeImmutable();
-        $this->updateAt = new \DateTime();
+        $this->classes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,14 +34,14 @@ class Niveau
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getLibelle(): ?string
     {
-        return $this->nom;
+        return $this->libelle;
     }
 
-    public function setNom(string $nom): static
+    public function setLibelle(string $libelle): static
     {
-        $this->nom = $nom;
+        $this->libelle = $libelle;
 
         return $this;
     }
@@ -61,65 +49,29 @@ class Niveau
     /**
      * @return Collection<int, Classe>
      */
-    public function getClasse(): Collection
+    public function getClasses(): Collection
     {
-        return $this->classe;
+        return $this->classes;
     }
 
-    public function addClasse(Classe $classe): static
+    public function addClass(Classe $class): static
     {
-        if (!$this->classe->contains($classe)) {
-            $this->classe->add($classe);
-            $classe->setNiveau($this);
+        if (!$this->classes->contains($class)) {
+            $this->classes->add($class);
+            $class->setNiveau($this);
         }
 
         return $this;
     }
 
-    public function removeClasse(Classe $classe): static
+    public function removeClass(Classe $class): static
     {
-        if ($this->classe->removeElement($classe)) {
+        if ($this->classes->removeElement($class)) {
             // set the owning side to null (unless already changed)
-            if ($classe->getNiveau() === $this) {
-                $classe->setNiveau(null);
+            if ($class->getNiveau() === $this) {
+                $class->setNiveau(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getSemestre(): ?Semestre
-    {
-        return $this->semestre;
-    }
-
-    public function setSemestre(?Semestre $semestre): static
-    {
-        $this->semestre = $semestre;
-
-        return $this;
-    }
-
-    public function getCreateAt(): ?\DateTimeImmutable
-    {
-        return $this->createAt;
-    }
-
-    public function setCreateAt(\DateTimeImmutable $createAt): static
-    {
-        $this->createAt = $createAt;
-
-        return $this;
-    }
-
-    public function getUpdateAt(): ?\DateTimeInterface
-    {
-        return $this->updateAt;
-    }
-
-    public function setUpdateAt(\DateTimeInterface $updateAt): static
-    {
-        $this->updateAt = $updateAt;
 
         return $this;
     }
