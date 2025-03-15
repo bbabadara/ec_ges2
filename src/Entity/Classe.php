@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Niveau;
 use App\Entity\Filiere;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClasseRepository;
 
@@ -25,6 +27,19 @@ class Classe
     #[ORM\ManyToOne(inversedBy: 'classes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Niveau $niveau = null;
+
+    /**
+     * @var Collection<int, Etudiant>
+     */
+    #[ORM\OneToMany(targetEntity: Etudiant::class, mappedBy: 'classe', orphanRemoval: true)]
+    private Collection $etudiants;
+
+    public function __construct()
+    {
+        $this->etudiants = new ArrayCollection();
+    }
+
+  
 
    
     public function getId(): ?int
@@ -67,4 +82,36 @@ class Classe
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Etudiant>
+     */
+    public function getEtudiants(): Collection
+    {
+        return $this->etudiants;
+    }
+
+    public function addEtudiant(Etudiant $etudiant): static
+    {
+        if (!$this->etudiants->contains($etudiant)) {
+            $this->etudiants->add($etudiant);
+            $etudiant->setClasse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtudiant(Etudiant $etudiant): static
+    {
+        if ($this->etudiants->removeElement($etudiant)) {
+            // set the owning side to null (unless already changed)
+            if ($etudiant->getClasse() === $this) {
+                $etudiant->setClasse(null);
+            }
+        }
+
+        return $this;
+    }
+
+  
 }

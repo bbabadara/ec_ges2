@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block bodyTitle %}Liste des classe{% endblock %} 
+
+{% block body %}
+ <div class="flex justify-end">
+        <a href="{{path("app_etudiant_add")}}" class=" bg-blue-500 hover:bg-blue-700 text-center text-white font-bold w-28 h-10 mx-2 p-2 rounded-lg">Ajouter</a>
+        
+    </div>
+    <div class="flex flex-wrap">
+        {% for message in app.flashes('success') %}
+            <div class="flex items-center bg-green-500 text-white p-2 mx-4 my-2 rounded-lg">{{ message }}</div>
+        {% endfor %}
+    </div>
+        <table class="w-full border-collapse border border-gray-300 mt-2">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2 text-left">Matricule</th>
+                    <th class="border border-gray-300 p-2 text-left">Nom</th>
+                    <th class="border border-gray-300 p-2 text-left">Prenom</th>
+                    <th class="border border-gray-300 p-2 text-left">Classe</th>
+        
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for etudiant in etudiants %}
+                <tr>
+                    <td class="border border-gray-300 p-2">{{etudiant.matricule}}</td>
+                    <td class="border border-gray-300 p-2">{{etudiant.nom}}</td>
+                    <td class="border border-gray-300 p-2">{{etudiant.prenom}}</td>
+                    <td class="border border-gray-300 p-2">{{etudiant.classe.libelle}}</td>
+            
+                </tr>
+                {% endfor %}
+             
+            </tbody>
+        </table>
+  
+{% endblock %}
